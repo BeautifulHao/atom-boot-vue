@@ -77,6 +77,7 @@ import { login } from '@/api/auth'
 export default {
   name: 'Login',
   components: {GlobalFooter},
+  props: ['redirectTo'],
   data () {
     return {
       logging: false,
@@ -109,11 +110,17 @@ export default {
             const result = res.data
             if (result.result === true) {
               const user = result.data.user
-              // this.$router.push('/dashboard/workplace')
               console.log('login success')
               this.$store.commit('account/setuser', user)
               this.$message.success(result.message, 3)
               this.$cookies.set('token', result.data.token, '0')
+
+              if (this.redirectTo) {
+                let {name, path, query, params} = this.redirectTo
+                this.$router.push({name, path, query, params})
+              } else {
+                this.$router.push('/')
+              }
             } else {
               this.error = result.message
             }

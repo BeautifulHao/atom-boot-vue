@@ -1,22 +1,61 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/pages/login/Login'
+import {setTitle, checkLogin} from '@/utils/common'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/login',
-      name: '登录页',
+      name: 'login',
+      meta: {
+        title: '登录',
+        needLogin: false
+      },
+      props: true,
       component: Login,
       invisible: true
     },
     {
       path: '/',
-      name: '首页',
-      redirect: '/login',
+      name: 'main',
+      meta: {
+        title: '首页',
+        needLogin: true
+      },
+      invisible: false
+    },
+    {
+      path: '/demo',
+      name: 'demo',
+      meta: {
+        title: '测试',
+        needLogin: true
+      },
+      component: () => import('@/pages/demo/needLogin.vue'),
       invisible: true
     }
   ]
 })
+
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  to.meta && setTitle(to.meta.title)
+
+  if (to.meta.needLogin === true) {
+    const isLogin = checkLogin()
+    if (isLogin) {
+    // 如果没有添加过路由，处理动态添加路由
+    // 处理过路由，直接next
+      next()
+    } else {
+      next({ name: 'login', params: {redirectTo: to} })
+    }
+  } else {
+    next()
+  }
+})
+
+export default router
