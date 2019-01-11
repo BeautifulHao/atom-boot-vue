@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/pages/login/Login'
-import {setTitle, checkLogin} from '@/utils/common'
+import { setTitle, checkLogin } from '@/utils/common'
+import NProgress from 'nprogress/nprogress'
 
 Vue.use(Router)
 
@@ -42,6 +43,10 @@ const router = new Router({
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
+  if (from.name !== null) {
+    NProgress.start()
+  }
+
   to.meta && setTitle(to.meta.title)
 
   if (to.meta.needLogin === true) {
@@ -56,6 +61,10 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+})
+
+router.afterEach((routeTo, routeFrom) => {
+  NProgress.done()
 })
 
 export default router
