@@ -8,6 +8,7 @@ import Viser from 'viser-vue'
 import '@/mock'
 import store from './store'
 import PouchDB from 'pouchdb'
+import 'nprogress/nprogress.css'
 
 // 生产环境关闭提示
 Vue.config.productionTip = false
@@ -21,7 +22,7 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>',
+  render: h => h(App),
   mounted () {
     // 判断是否已经登录
     let token = this.$cookies.get('token')
