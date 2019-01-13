@@ -110,7 +110,6 @@ export default {
             const result = res.data
             if (result.result === true) {
               const user = result.data.user
-              console.log('login success')
               this.$store.commit('account/setuser', user)
               this.$message.success(result.message, 3)
               this.$cookies.set('token', result.data.token, '0')
@@ -119,7 +118,7 @@ export default {
                 let {name, path, query, params} = this.redirectTo
                 this.$router.push({name, path, query, params})
               } else {
-                this.$router.push('/')
+                this.$router.push('/dashboard/workplace')
               }
             } else {
               this.error = result.message

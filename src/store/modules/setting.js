@@ -3,7 +3,7 @@ export default {
   state: {
     theme: 'dark',
     layout: 'side',
-    systemName: 'XXX 综合管理系统',
+    systemName: 'Just Do It',
     copyright: '  2017-2019 XXX软件技术有限公司版权所有 ',
     footerLinks: [
       {link: 'https://www.baidu.com', name: '公司网站'},

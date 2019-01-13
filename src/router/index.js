@@ -3,6 +3,9 @@ import Router from 'vue-router'
 import Login from '@/pages/login/Login'
 import { setTitle, checkLogin } from '@/utils/common'
 import NProgress from 'nprogress/nprogress'
+import PageView from '@/layouts/PageView'
+import RouteView from '@/layouts/RouteView'
+import MenuView from '@/layouts/MenuView'
 
 Vue.use(Router)
 
@@ -22,21 +25,65 @@ const router = new Router({
     {
       path: '/',
       name: 'main',
+      component: MenuView,
+      redirect: '/login',
       meta: {
         title: '首页',
         needLogin: true
       },
-      invisible: false
+      invisible: false,
+      children: [
+        {
+          path: '/dashboard',
+          name: 'dashboard',
+          component: RouteView,
+          meta: {
+            title: '看 板',
+            needLogin: false
+          },
+          icon: 'dashboard',
+          children: [
+            {
+              path: '/dashboard/workplace',
+              name: 'workplace',
+              meta: {
+                title: '工作台',
+                needLogin: false
+              },
+              component: () => import('@/pages/dashboard/WorkPlace'),
+              icon: 'bar-chart'
+            },
+            {
+              path: '/dashboard/analysis',
+              name: 'analysis',
+              meta: {
+                title: '分析报告',
+                needLogin: false
+              },
+              component: () => import('@/pages/dashboard/Analysis'),
+              icon: 'bars'
+            }
+          ]
+        }
+      ]
     },
     {
       path: '/demo',
       name: 'demo',
+      component: PageView,
       meta: {
         title: '测试',
         needLogin: true
       },
-      component: () => import('@/pages/demo/needLogin.vue'),
-      invisible: true
+      invisible: true,
+      children: [
+        {
+          path: '/demo/item',
+          name: 'item',
+          component: () => import('@/pages/demo/needLogin.vue'),
+          icon: 'none'
+        }
+      ]
     }
   ]
 })
