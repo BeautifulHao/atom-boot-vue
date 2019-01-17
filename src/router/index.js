@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Login from '@/pages/login/Login'
 import { setTitle, checkLogin } from '@/utils/common'
 import NProgress from 'nprogress/nprogress'
-import PageView from '@/layouts/PageView'
 import RouteView from '@/layouts/RouteView'
 import MenuView from '@/layouts/MenuView'
 
@@ -64,24 +63,80 @@ const router = new Router({
               icon: 'bars'
             }
           ]
-        }
-      ]
-    },
-    {
-      path: '/demo',
-      name: 'demo',
-      component: PageView,
-      meta: {
-        title: '测试',
-        needLogin: true
-      },
-      invisible: true,
-      children: [
+        },
         {
-          path: '/demo/item',
-          name: 'item',
-          component: () => import('@/pages/demo/needLogin.vue'),
-          icon: 'none'
+          path: '/demo',
+          name: 'demo',
+          component: RouteView,
+          meta: {
+            title: '测试',
+            needLogin: true
+          },
+          invisible: false,
+          children: [
+            {
+              path: '/demo/item',
+              name: 'item',
+              component: () => import('@/pages/demo/needLogin.vue'),
+              icon: 'none'
+            }
+          ]
+        },
+        {
+          path: '/list',
+          name: 'list',
+          meta: {
+            title: '列表页',
+            needLogin: true
+          },
+          component: RouteView,
+          icon: 'table',
+          children: [
+            {
+              path: '/list/query',
+              name: '查询表格',
+              component: () => import('@/pages/list/QueryList'),
+              icon: 'none'
+            },
+            {
+              path: '/list/primary',
+              name: '标准列表',
+              component: () => import('@/pages/list/StandardList'),
+              icon: 'none'
+            },
+            {
+              path: '/list/card',
+              name: '卡片列表',
+              component: () => import('@/pages/list/CardList'),
+              icon: 'none'
+            },
+            {
+              path: '/list/search',
+              name: '搜索列表',
+              component: () => import('@/pages/list/search/SearchLayout'),
+              icon: 'none',
+              children: [
+                {
+                  path: '/list/search/article',
+                  name: '文章',
+                  component: () => import('@/pages/list/search/ArticleList'),
+                  icon: 'none'
+                },
+                {
+                  path: '/list/search/application',
+                  name: '应用',
+                  component: () => import('@/pages/list/search/ApplicationList'),
+                  icon: 'none'
+                },
+                {
+                  path: '/list/search/project',
+                  name: '项目',
+                  component: () => import('@/pages/list/search/ProjectList'),
+                  icon: 'none'
+                }
+              ]
+            }
+          ]
         }
       ]
     }
