@@ -1,5 +1,5 @@
 import Mock from 'mockjs'
-import {logos, sayings, positions, avatars, admins} from '../common'
+import {logos, sayings, positions, avatars, admins, gender, groups} from '../common'
 
 const Random = Mock.Random
 
@@ -26,5 +26,11 @@ Random.extend({
   },
   logo () {
     return this.pick(logos)
+  },
+  gender () {
+    return this.pick(gender)
+  },
+  group () {
+    return this.pick(groups)
   }
 })

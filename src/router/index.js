@@ -93,6 +93,12 @@ const router = new Router({
           icon: 'table',
           children: [
             {
+              path: '/list/demo',
+              name: '通用表格',
+              component: () => import('@/pages/table/commonList'),
+              icon: 'none'
+            },
+            {
               path: '/list/query',
               name: '查询表格',
               component: () => import('@/pages/list/QueryList'),

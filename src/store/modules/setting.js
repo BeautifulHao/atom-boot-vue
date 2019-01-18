@@ -10,7 +10,8 @@ export default {
       {link: 'https://www.baidu.com', name: '法律声明'},
       {link: 'https://www.baidu.com', name: '常见问题'}
     ],
-    multipage: true
+    multipage: true,
+    locale: 'en_GB'
   },
   mutations: {
     setTheme (state, theme) {
@@ -21,6 +22,9 @@ export default {
     },
     setMultipage (state, multipage) {
       state.multipage = multipage
+    },
+    setLocale (state, value) {
+      state.locale = value
     }
   }
 }

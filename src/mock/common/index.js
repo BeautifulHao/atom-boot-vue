@@ -73,4 +73,6 @@ const teams = groups.map((item, index) => {
   }
 })
 
-export {logos, sayings, positions, avatars, admins, groups, users, teams}
+const gender = ['female', 'male']
+
+export {logos, sayings, positions, avatars, admins, groups, users, teams, gender}

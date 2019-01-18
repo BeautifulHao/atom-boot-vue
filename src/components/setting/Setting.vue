@@ -35,6 +35,13 @@
           </a-select>
         </a-list-item>
         <a-list-item>
+          语言环境
+          <a-select size="small" defaultValue="en_GB" slot="actions" style="width: 80px" @change="changeLocale">
+            <a-select-option value="en_GB">English</a-select-option>
+            <a-select-option value="zh_CN">中文</a-select-option>
+          </a-select>
+        </a-list-item>
+        <a-list-item>
           固定Header
           <a-switch slot="actions" size="small" />
         </a-list-item>
@@ -89,6 +96,9 @@ export default {
       if (colors.length > 0) {
         this.$message.info(`您选择了主题色 ${colors}`)
       }
+    },
+    changeLocale (value) {
+      this.$store.commit('setting/setLocale', value)
     },
     setTheme (values) {
       this.$store.commit('setting/setTheme', values[0])
