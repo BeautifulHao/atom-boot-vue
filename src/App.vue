@@ -7,7 +7,7 @@
 </template>
 <script>
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
-import enGB from 'ant-design-vue/lib/locale-provider/en_GB'
+import enGB from 'ant-design-vue/lib/locale-provider/en_US'
 export default {
   name: 'App',
   computed: {

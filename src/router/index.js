@@ -74,6 +74,7 @@ const router = new Router({
             needLogin: true
           },
           invisible: false,
+          icon: 'lock',
           children: [
             {
               path: '/demo/item',

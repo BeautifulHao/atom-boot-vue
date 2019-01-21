@@ -32,31 +32,38 @@
       </a-button-group>
     </div>
     <div :class="advanced ? null : 'showSearch'">
-      <a-form layout="horizontal">
+      <a-form layout="horizontal"
+              :form="formQuery">
         <div>
           <a-row>
             <a-col :md="8"
                    :sm="24">
               <a-form-item label="姓 名"
                            :labelCol="{span: 5}"
-                           :wrapperCol="{span: 18, offset: 1}">
-                <a-input placeholder="请输入人员姓名" />
+                           :wrapperCol="{span: 18, offset: 1}"
+                           key="userName">
+                <a-input placeholder="请输入人员姓名"
+                         v-decorator="['name',{}]" />
               </a-form-item>
             </a-col>
             <a-col :md="8"
                    :sm="24">
               <a-form-item label="身份证"
                            :labelCol="{span: 5}"
-                           :wrapperCol="{span: 18, offset: 1}">
-                <a-input placeholder="请输入位身份证信息" />
+                           :wrapperCol="{span: 18, offset: 1}"
+                           key="id">
+                <a-input placeholder="请输入位身份证信息"
+                         v-decorator="['id',{}]" />
               </a-form-item>
             </a-col>
             <a-col :md="8"
                    :sm="24">
               <a-form-item label="状 态"
                            :labelCol="{span: 5}"
-                           :wrapperCol="{span: 18, offset: 1}">
-                <a-select placeholder="请选择">
+                           :wrapperCol="{span: 18, offset: 1}"
+                           key="status">
+                <a-select placeholder="请选择"
+                          v-decorator="['status',{}]">
                   <a-select-option value="">全部</a-select-option>
                   <a-select-option value="in">在职</a-select-option>
                   <a-select-option value="stop">停职</a-select-option>
@@ -70,26 +77,35 @@
                    :sm="24">
               <a-form-item label="年 龄"
                            :labelCol="{span: 5}"
-                           :wrapperCol="{span: 18, offset: 1}">
+                           :wrapperCol="{span: 18, offset: 1}"
+                           key="age">
                 <a-input-number style="width: 100%"
-                                placeholder="请输入人员年龄" />
+                                placeholder="请输入人员年龄"
+                                :max="150"
+                                :min="0"
+                                :precision="0"
+                                v-decorator="['age',{}]" />
               </a-form-item>
             </a-col>
             <a-col :md="8"
                    :sm="24">
               <a-form-item label="入职日期"
                            :labelCol="{span: 5}"
-                           :wrapperCol="{span: 18, offset: 1}">
+                           :wrapperCol="{span: 18, offset: 1}"
+                           key="checkInDate">
                 <a-date-picker style="width: 100%"
-                               placeholder="请输入入职日期" />
+                               placeholder="请输入入职日期"
+                               v-decorator="['checkInDate',{}]" />
               </a-form-item>
             </a-col>
             <a-col :md="8"
                    :sm="24">
               <a-form-item label="地 址"
                            :labelCol="{span: 5}"
-                           :wrapperCol="{span: 18, offset: 1}">
-                <a-input placeholder="请输入地址" />
+                           :wrapperCol="{span: 18, offset: 1}"
+                           key="city">
+                <a-input placeholder="请输入地址"
+                         v-decorator="['city',{}]" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -100,10 +116,12 @@
                    :sm="24"
                    style="text-align: right;margin-bottom:18px;">
               <a-button type="primary"
-                        icon="search">查询</a-button>
+                        icon="search"
+                        @click="queryClick">查询</a-button>
               <a-button type="primary"
                         style="margin-left: 8px"
-                        icon="rest">重置</a-button>
+                        icon="rest"
+                        @click='clearQueryClick'>重置</a-button>
             </a-col>
           </a-row>
         </div>
@@ -140,6 +158,9 @@
 
 <script>
 import { getList } from '@/api/demo'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
+moment.locale('zh-cn')
 
 const columns = [{
   title: '姓名',
@@ -198,7 +219,8 @@ export default {
       loading: false,
       columns,
       bordered: true,
-      advanced: false
+      advanced: false,
+      formQuery: this.$form.createForm(this)
     }
   },
   methods: {
@@ -261,6 +283,17 @@ export default {
     },
     qSearch () {
       this.advanced = !this.advanced
+    },
+    clearQueryClick () {
+      this.formQuery.resetFields()
+    },
+    queryClick () {
+      let qf = this.formQuery.getFieldsValue()
+      if (qf['checkInDate']) {
+        qf.checkInDate = moment(qf.checkInDate).format('yyyy-MM-dd')
+      }
+
+      console.log(qf)
     }
   }
 }

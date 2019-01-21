@@ -37,7 +37,7 @@
         <a-list-item>
           语言环境
           <a-select size="small" :defaultValue="localeSetting" slot="actions" style="width: 80px" @change="changeLocale">
-            <a-select-option value="en_GB">English</a-select-option>
+            <a-select-option value="en_US">English</a-select-option>
             <a-select-option value="zh_CN">中文</a-select-option>
           </a-select>
         </a-list-item>
