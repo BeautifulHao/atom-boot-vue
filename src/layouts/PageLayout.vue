@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: -24px -24px 0px">
+  <div style="">
     <page-header :breadcrumb="breadcrumb" :title="title" :logo="logo" :avatar="avatar">
       <slot name="action"  slot="action"></slot>
       <slot slot="content" name="headerContent"></slot>

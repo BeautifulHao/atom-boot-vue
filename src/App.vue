@@ -18,4 +18,7 @@ export default {
 }
 </script>
 <style lang="less">
+.ant-tabs-bar{
+  margin: 0px;
+}
 </style>

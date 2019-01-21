@@ -5,7 +5,6 @@
       @contextmenu.native="e => onContextmenu(e)"
       v-if="multipage"
       :active-key="activePage"
-      style="margin-top: -8px; margin-bottom: 8px"
       :hide-add="true"
       type="editable-card"
       @change="changePage"

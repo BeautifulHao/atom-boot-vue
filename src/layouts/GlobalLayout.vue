@@ -12,12 +12,12 @@
     </drawer>
     <a-layout>
       <global-header :menuData="menuData" :collapsed="collapsed" @toggleCollapse="toggleCollapse"/>
-      <a-layout-content :style="{minHeight: minHeight, margin: '24px 24px 0'}">
+      <a-layout-content :style="{minHeight: minHeight, margin: '5px'}">
         <slot></slot>
       </a-layout-content>
-      <a-layout-footer style="padding: 0px">
+      <!-- <a-layout-footer style="padding: 0px">
         <global-footer :link-list="linkList" :copyright="copyright" />
-      </a-layout-footer>
+      </a-layout-footer> -->
     </a-layout>
   </a-layout>
 </template>
@@ -29,7 +29,7 @@ import Drawer from '../components/tool/Drawer'
 import SiderMenu from '../components/menu/SiderMenu'
 import Setting from '../components/setting/Setting'
 
-const minHeight = window.innerHeight - 64 - 24 - 122
+const minHeight = window.innerHeight - 64 - 10
 
 let menuData = []
 
