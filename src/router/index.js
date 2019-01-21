@@ -5,6 +5,7 @@ import { setTitle, checkLogin } from '@/utils/common'
 import NProgress from 'nprogress/nprogress'
 import RouteView from '@/layouts/RouteView'
 import MenuView from '@/layouts/MenuView'
+import store from '@/store'
 
 Vue.use(Router)
 
@@ -96,7 +97,12 @@ const router = new Router({
               path: '/list/demo',
               name: '通用表格',
               component: () => import('@/pages/table/commonList'),
-              icon: 'none'
+              icon: 'none',
+              meta: {
+                title: '通用表格',
+                // 自动收折菜单
+                maxContent: true
+              }
             },
             {
               path: '/list/query',
@@ -172,6 +178,9 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((routeTo, routeFrom) => {
+  if (routeTo.meta && routeTo.meta.maxContent) {
+    store.commit('setting/setMenuCollapsed', routeTo.meta.maxContent)
+  }
   NProgress.done()
 })
 

@@ -39,7 +39,6 @@ export default {
   data () {
     return {
       minHeight: minHeight + 'px',
-      collapsed: false,
       menuData: menuData,
       showSetting: false
     }
@@ -59,11 +58,14 @@ export default {
     },
     copyright () {
       return this.$store.state.setting.copyright
+    },
+    collapsed () {
+      return this.$store.state.setting.menuCollapsed
     }
   },
   methods: {
     toggleCollapse () {
-      this.collapsed = !this.collapsed
+      this.$store.commit('setting/setMenuCollapsed', !this.collapsed)
     },
     onDrawerChange (show) {
       this.collapsed = show

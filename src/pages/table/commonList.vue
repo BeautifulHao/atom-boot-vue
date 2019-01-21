@@ -86,10 +86,10 @@
             </a-col>
             <a-col :md="8"
                    :sm="24">
-              <a-form-item label="描述"
+              <a-form-item label="地 址"
                            :labelCol="{span: 5}"
                            :wrapperCol="{span: 18, offset: 1}">
-                <a-input placeholder="请输入" />
+                <a-input placeholder="请输入地址" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -198,7 +198,7 @@ export default {
       loading: false,
       columns,
       bordered: true,
-      advanced: true
+      advanced: false
     }
   },
   methods: {
