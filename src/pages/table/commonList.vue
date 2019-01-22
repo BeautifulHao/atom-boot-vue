@@ -1,35 +1,33 @@
 <template>
   <a-card :bordered="false">
-    <div class="operator">
-      <a-button-group>
-        <a-button @click="addItem"
-                  icon="plus">新建</a-button>
-        <a-button @click="eidtItem"
-                  icon="edit">修改</a-button>
-        <a-button @click="deleteItem"
-                  icon="delete">删除</a-button>
-        <a-button @click="viewItem"
-                  icon="info-circle">查看</a-button>
-        <a-dropdown>
-          <a-menu @click="handleMenuClick"
-                  slot="overlay">
-            <a-menu-item key="lock">
-              <a-icon type="lock" />禁用</a-menu-item>
-            <a-menu-item key="unlock">
-              <a-icon type="unlock" />启用</a-menu-item>
-            <a-menu-item key="audit">
-              <a-icon type="safety" />审批</a-menu-item>
-          </a-menu>
-          <a-button>
-            <a-icon type="bars" /> 更多操作
-            <a-icon type="down" />
-          </a-button>
-        </a-dropdown>
-        <a-button :icon="advanced ? 'up' : 'down'"
-                  @click="qSearch">
-          高级查找
+    <div type="info" class="operator">
+      <a-button @click="addItem"
+                icon="plus">新建</a-button>
+      <a-button @click="eidtItem"
+                icon="edit">修改</a-button>
+      <a-button @click="deleteItem"
+                icon="delete">删除</a-button>
+      <a-button @click="viewItem"
+                icon="info-circle">查看</a-button>
+      <a-dropdown>
+        <a-menu @click="handleMenuClick"
+                slot="overlay">
+          <a-menu-item key="lock">
+            <a-icon type="lock" />禁用</a-menu-item>
+          <a-menu-item key="unlock">
+            <a-icon type="unlock" />启用</a-menu-item>
+          <a-menu-item key="audit">
+            <a-icon type="safety" />审批</a-menu-item>
+        </a-menu>
+        <a-button>
+          <a-icon type="bars" /> 更多操作
+          <a-icon type="down" />
         </a-button>
-      </a-button-group>
+      </a-dropdown>
+      <a-button :icon="advanced ? 'up' : 'down'"
+                @click="qSearch">
+        高级查找
+      </a-button>
     </div>
     <div :class="advanced ? null : 'showSearch'">
       <a-form layout="horizontal"
@@ -316,6 +314,9 @@ export default {
 <style lang="less" scoped>
 .operator {
   margin-bottom: 18px;
+  border: 1px solid #e8e8e8;
+  background-color: #fafafa;
+  padding: 5px;
 }
 .showSearch {
   display: none;
