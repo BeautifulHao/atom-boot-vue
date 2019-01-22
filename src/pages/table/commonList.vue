@@ -63,8 +63,8 @@
                            :wrapperCol="{span: 18, offset: 1}"
                            key="status">
                 <a-select placeholder="请选择"
-                          v-decorator="['status',{}]">
-                  <a-select-option value="">全部</a-select-option>
+                          v-decorator="['status',{}]"
+                          mode="multiple">
                   <a-select-option value="in">在职</a-select-option>
                   <a-select-option value="stop">停职</a-select-option>
                   <a-select-option value="out">离职</a-select-option>
@@ -127,13 +127,13 @@
         </div>
       </a-form>
     </div>
-
-    <a-table :columns="columns"
-             :rowKey="record => record.uuid"
-             :dataSource="data"
+    <a-table :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+             :columns="columns"
+             :dataSource="dataSource"
              :pagination="pagination"
              :loading="loading"
              :bordered="bordered"
+             :rowKey="record => record.key"
              @change="handleTableChange">
       <template slot="name"
                 slot-scope="name">
@@ -158,9 +158,6 @@
 
 <script>
 import { getList } from '@/api/demo'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
-moment.locale('zh-cn')
 
 const columns = [{
   title: '姓名',
@@ -197,11 +194,6 @@ const columns = [{
   dataIndex: 'status',
   width: 80,
   align: 'center',
-  filters: [
-    { text: '在职', value: 'in' },
-    { text: '停职', value: 'stop' },
-    { text: '离职', value: 'out' }
-  ],
   scopedSlots: { customRender: 'status' }
 }, {
   title: '地址',
@@ -214,16 +206,22 @@ export default {
   },
   data () {
     return {
-      data: [],
+      dataSource: [],
       pagination: { 'showQuickJumper': true, 'showSizeChanger': true, 'defaultPageSize': 10, showTotal: (total, range) => `当前：${range[0]}-${range[1]}, 共 ${total} 项` },
       loading: false,
-      columns,
+      columns: columns,
       bordered: true,
+      selectedRowKeys: [],
       advanced: false,
-      formQuery: this.$form.createForm(this)
+      formQuery: this.$form.createForm(this),
+      tableFilters: {},
+      tableOrder: {}
     }
   },
   methods: {
+    onSelectChange (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+    },
     toggleAdvanced () {
       this.advanced = !this.advanced
     },
@@ -238,10 +236,17 @@ export default {
         return newObj
       }, {})
 
+      // 记录列表筛选条件
+      this.tableFilters = { ...filters }
+      this.tableOrder = { sorter: sorter.field, order: sorter.order }
+
+      const query = this.getQuery()
+
       const params = {
         pageSize: pagination.pageSize,
         currentPage: pagination.current,
-        ...filters
+        ...filters,
+        ...query
       }
 
       if (sorter.field) {
@@ -256,10 +261,10 @@ export default {
       getList({ ...params }).then((data) => {
         let ret = data.data
         const pagination = { ...this.pagination }
-        pagination.total = ret.info.total
-        pagination.current = parseInt(ret.info.currentPage)
+        pagination.total = ret.pagination.total
+        pagination.current = parseInt(ret.pagination.currentPage)
         this.loading = false
-        this.data = ret.results
+        this.dataSource = JSON.parse(JSON.stringify(ret.results))
         this.pagination = pagination
       })
     },
@@ -279,7 +284,7 @@ export default {
 
     },
     deleteItem () {
-      // this.remove()
+
     },
     qSearch () {
       this.advanced = !this.advanced
@@ -288,13 +293,22 @@ export default {
       this.formQuery.resetFields()
     },
     queryClick () {
+      let params = { ...this.getQuery(), ...this.tableFilters, ...this.tableOrder }
+      this.fetch(params)
+    },
+    getQuery () {
       let qf = this.formQuery.getFieldsValue()
       if (qf['checkInDate']) {
-        qf.checkInDate = moment(qf.checkInDate).format('yyyy-MM-dd')
+        qf.checkInDate = this.$moment(qf.checkInDate).format('YYYY-MM-DD')
       }
 
-      console.log(qf)
+      if (qf['status']) {
+        qf.status = qf.status.join(',')
+      }
+
+      return qf
     }
+
   }
 }
 </script>

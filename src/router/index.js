@@ -106,6 +106,17 @@ const router = new Router({
               }
             },
             {
+              path: '/list/simple',
+              name: 'simple',
+              component: () => import('@/pages/table/simple'),
+              icon: 'none',
+              meta: {
+                title: '简单表格',
+                // 自动收折菜单
+                maxContent: true
+              }
+            },
+            {
               path: '/list/query',
               name: '查询表格',
               component: () => import('@/pages/list/QueryList'),

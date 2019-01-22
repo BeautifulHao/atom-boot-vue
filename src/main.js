@@ -9,12 +9,15 @@ import '@/mock'
 import store from './store'
 import PouchDB from 'pouchdb'
 import 'nprogress/nprogress.css'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
 
 // 生产环境关闭提示
 Vue.config.productionTip = false
 // 图表类插件
 Vue.use(Viser)
 Vue.use(Antd)
+Vue.prototype.$moment = moment
 
 /* eslint-disable no-new */
 new Vue({
@@ -37,6 +40,10 @@ new Vue({
           console.log('welcome to atom-boot framework! ')
         }
       })
+    }
+
+    if (this.$store.state.setting.locale === 'zh_CN') {
+      this.$moment.locale('zh-cn')
     }
   }
 })
