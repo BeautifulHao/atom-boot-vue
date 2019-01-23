@@ -12,7 +12,7 @@
           </a-tabs>
         </div>
       </div>
-      <div class="search-content">
+      <div>
         <router-view />
       </div>
     </div>
@@ -58,12 +58,9 @@ export default {
 <style lang="less" scoped>
   .search-head{
     background-color: #fff;
-    margin: -25px -24px -24px;
     .search-input{
       text-align: center;
+      padding-top: 24px;
     }
-  }
-  .search-content{
-    margin-top: 48px;
   }
 </style>

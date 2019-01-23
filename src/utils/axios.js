@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { baseUrl } from '@/config'
+import NProgress from 'nprogress/nprogress'
 
 /**
  *
@@ -26,7 +27,7 @@ class HttpRequest {
   }
   interceptors (instance) {
     instance.interceptors.request.use(config => {
-      // 添加全局加载loading
+      NProgress.start()
       // (`开始加载数据:`, config)
       // const token = sessionStorage.getItem('token')
       // if (token && token.length > 0) {
@@ -34,13 +35,15 @@ class HttpRequest {
       // }
       return config
     }, error => {
+      NProgress.done()
       return Promise.reject(error)
     })
 
     instance.interceptors.response.use(res => {
-      // console.log(`数据加载结束:`, res)
+      NProgress.done()
       return res
     }, error => {
+      NProgress.done()
       if (error.response.status === 401) {
         // console.log('当前请求需要身份认证!')
       }

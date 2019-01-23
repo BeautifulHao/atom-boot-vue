@@ -10,7 +10,7 @@
             {{item.customRender ? item.customRender(item.total) : item.total}}
             </a>&nbsp;&nbsp;
           </template>
-          <a style="margin-left: 24px">清空</a>
+          <a style="margin-left: 24px" >清空</a>
         </div>
       </a-alert>
     </div>

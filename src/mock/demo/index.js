@@ -1,7 +1,7 @@
 import Mock from 'mockjs'
 import '@/mock/extend'
 
-const listDb = Mock.mock({
+let listDb = Mock.mock({
   'list|500': [
     {
       name: { first: '@cfirst', last: '@clast' },
@@ -96,7 +96,7 @@ Mock.mock(/\/demo\/list(.*?)/, 'get', options => {
 
   let total = results.length
 
-  if (results.length >= pageSize * (currentPage - 1)) {
+  if (results.length > pageSize * (currentPage - 1)) {
     results = results.filter(
       (element, index, array) =>
         index >= pageSize * (currentPage - 1) && index < pageSize * currentPage
@@ -115,5 +115,17 @@ Mock.mock(/\/demo\/list(.*?)/, 'get', options => {
       pageSize: pageSize,
       currentPage: currentPage
     }
+  }
+})
+
+Mock.mock(/\/demo\/delete(.*?)/, 'post', ({ body }) => {
+  const { items } = JSON.parse(body)
+  if (items.length > 0) {
+    listDb = listDb.filter(item => items.indexOf(item.key) === -1)
+  }
+
+  return {
+    result: true,
+    message: 'success'
   }
 })

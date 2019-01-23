@@ -7,3 +7,11 @@ export const getList = (params) => {
     params: params
   })
 }
+
+export const deleteItems = (params) => {
+  return http.request({
+    url: '/demo/delete',
+    method: 'POST',
+    data: params
+  })
+}

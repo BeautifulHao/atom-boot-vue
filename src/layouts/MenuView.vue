@@ -1,16 +1,20 @@
 <template>
   <global-layout>
-    <contextmenu :itemList="menuItemList" :visible.sync="menuVisible" @select="onMenuSelect" />
-    <a-tabs
-      @contextmenu.native="e => onContextmenu(e)"
-      v-if="multipage"
-      :active-key="activePage"
-      :hide-add="true"
-      type="editable-card"
-      @change="changePage"
-      @edit="editPage">
-      <a-tab-pane :id="page.fullPath" :key="page.fullPath" v-for="page in pageList">
-        <span slot="tab" :pagekey="page.fullPath">{{page.meta && page.meta.title ? page.meta.title : page.name}}</span>
+    <contextmenu :itemList="menuItemList"
+                 :visible.sync="menuVisible"
+                 @select="onMenuSelect" />
+    <a-tabs @contextmenu.native="e => onContextmenu(e)"
+            v-if="multipage"
+            :active-key="activePage"
+            :hide-add="true"
+            type="editable-card"
+            @change="changePage"
+            @edit="editPage">
+      <a-tab-pane :id="page.fullPath"
+                  :key="page.fullPath"
+                  v-for="page in pageList">
+        <span slot="tab"
+              :pagekey="page.fullPath">{{page.meta && page.meta.title ? page.meta.title : page.name}}</span>
       </a-tab-pane>
     </a-tabs>
     <transition name="page-toggle">
@@ -27,7 +31,7 @@ import GlobalLayout from './GlobalLayout'
 import Contextmenu from '../components/menu/Contextmenu'
 export default {
   name: 'MenuView',
-  components: {Contextmenu, GlobalLayout},
+  components: { Contextmenu, GlobalLayout },
   data () {
     return {
       pageList: [],
@@ -53,14 +57,30 @@ export default {
   },
   watch: {
     '$route': function (newRoute, oldRoute) {
-      this.activePage = newRoute.fullPath
       if (!this.multipage) {
         this.linkList = [newRoute.fullPath]
         this.pageList = [newRoute]
       } else if (this.linkList.indexOf(newRoute.fullPath) < 0) {
-        this.linkList.push(newRoute.fullPath)
-        this.pageList.push(newRoute)
+        // 存在当前替换
+        if (newRoute.params && newRoute.params.replace) {
+          let replaceItemIndex = this.linkList.findIndex((value) => value === newRoute.params.replace)
+          if (replaceItemIndex > -1) {
+            this.linkList[replaceItemIndex] = newRoute.fullPath
+            let replaceRouteIndex = this.pageList.findIndex((value) => value.fullPath === newRoute.params.replace)
+            if (replaceRouteIndex > -1) {
+              this.pageList[replaceRouteIndex] = newRoute
+            }
+          } else {
+            this.linkList.push(newRoute.fullPath)
+            this.pageList.push(newRoute)
+          }
+        } else {
+          this.linkList.push(newRoute.fullPath)
+          this.pageList.push(newRoute)
+        }
       }
+
+      this.activePage = newRoute.fullPath
     },
     'activePage': function (key) {
       this.$router.push(key)
@@ -157,5 +177,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

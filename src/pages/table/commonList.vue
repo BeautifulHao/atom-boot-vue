@@ -1,6 +1,7 @@
 <template>
   <a-card :bordered="false">
-    <div type="info" class="operator">
+    <div type="info"
+         class="operator">
       <a-button @click="addItem"
                 icon="plus">新建</a-button>
       <a-button @click="eidtItem"
@@ -125,6 +126,16 @@
         </div>
       </a-form>
     </div>
+    <div class="alert">
+      <a-alert type="info"
+               :show-icon="true">
+        <div slot="message">
+          已选择&nbsp;<a style="font-weight: 600">{{selectedRowKeys.length}}</a>&nbsp;项&nbsp;
+          <a style="margin-left: 24px"
+             @click="clearSelect">清空</a>
+        </div>
+      </a-alert>
+    </div>
     <a-table :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
              :columns="columns"
              :dataSource="dataSource"
@@ -155,7 +166,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/demo'
+import { getList, deleteItems } from '@/api/demo'
 
 const columns = [{
   title: '姓名',
@@ -199,6 +210,7 @@ const columns = [{
 }]
 
 export default {
+  props: ['detail'],
   mounted () {
     this.fetch({ pageSize: this.pagination.defaultPageSize })
   },
@@ -273,7 +285,7 @@ export default {
       console.log(e.key)
     },
     addItem () {
-
+      this.$router.replace({ name: 'common-list-item', params: { busKey: 1, editType: 'Add', replace: this.$route.fullPath } })
     },
     eidtItem () {
 
@@ -282,7 +294,33 @@ export default {
 
     },
     deleteItem () {
-
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.warning('请先选择待删除数据')
+        return false
+      } else {
+        let me = this
+        this.$confirm({
+          title: '确定删除这些数据?',
+          content: `当前选中了:${this.selectedRowKeys.length}项`,
+          onOk () {
+            me.loading = true
+            deleteItems({ items: [...me.selectedRowKeys] }).then((data) => {
+              let ret = data.data
+              me.loading = false
+              if (ret.result === true) {
+                me.$message.success('删除成功')
+                me.selectedRowKeys = []
+                me.reLoad()
+              } else {
+                me.$error({
+                  title: '删除失败',
+                  content: `删除过程发生了以下错误：${ret.message}`
+                })
+              }
+            })
+          }
+        })
+      }
     },
     qSearch () {
       this.advanced = !this.advanced
@@ -305,6 +343,20 @@ export default {
       }
 
       return qf
+    },
+    reLoad () {
+      let params = {
+        pageSize: this.pagination.pageSize,
+        currentPage: this.pagination.current,
+        ...this.getQuery(),
+        ...this.tableFilters,
+        ...this.tableOrder
+      }
+
+      this.fetch(params)
+    },
+    clearSelect () {
+      this.selectedRowKeys = []
     }
 
   }
@@ -320,5 +372,8 @@ export default {
 }
 .showSearch {
   display: none;
+}
+.alert {
+  margin-bottom: 18px;
 }
 </style>

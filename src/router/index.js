@@ -71,7 +71,7 @@ const router = new Router({
           component: RouteView,
           meta: {
             title: '测试',
-            needLogin: true
+            needLogin: false
           },
           invisible: false,
           icon: 'lock',
@@ -81,6 +81,15 @@ const router = new Router({
               name: 'item',
               component: () => import('@/pages/demo/needLogin.vue'),
               icon: 'none'
+            },
+            {
+              path: '/demo/route',
+              name: 'demoRoute',
+              component: () => import('@/pages/demo/routeTest.vue'),
+              meta: {
+                title: '路由测试',
+                needLogin: false
+              }
             }
           ]
         },
@@ -96,13 +105,25 @@ const router = new Router({
           children: [
             {
               path: '/list/demo',
-              name: '通用表格',
+              name: 'common-list',
               component: () => import('@/pages/table/commonList'),
               icon: 'none',
               meta: {
                 title: '通用表格',
                 // 自动收折菜单
                 maxContent: true
+              }
+            },
+            {
+              path: '/list/item/:busKey/:editType',
+              name: 'common-list-item',
+              component: () => import('@/pages/table/commonDetail'),
+              icon: 'none',
+              invisible: true,
+              props: true,
+              meta: {
+                title: '通用明细',
+                maxContent: false
               }
             },
             {
@@ -138,7 +159,8 @@ const router = new Router({
                 {
                   path: '/list/search/application',
                   name: '应用',
-                  component: () => import('@/pages/list/search/ApplicationList'),
+                  component: () =>
+                    import('@/pages/list/search/ApplicationList'),
                   icon: 'none'
                 },
                 {
@@ -167,11 +189,11 @@ router.beforeEach((to, from, next) => {
   if (to.meta.needLogin === true) {
     const isLogin = checkLogin()
     if (isLogin) {
-    // 如果没有添加过路由，处理动态添加路由
-    // 处理过路由，直接next
+      // 如果没有添加过路由，处理动态添加路由
+      // 处理过路由，直接next
       next()
     } else {
-      next({ name: 'login', params: {redirectTo: to} })
+      next({ name: 'login', params: { redirectTo: to } })
     }
   } else {
     next()
