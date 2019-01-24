@@ -15,3 +15,19 @@ export const deleteItems = (params) => {
     data: params
   })
 }
+
+export const getItem = (params) => {
+  return http.request({
+    url: '/demo/item',
+    method: 'GET',
+    params: params
+  })
+}
+
+export const saveItem = (params) => {
+  return http.request({
+    url: '/demo/save',
+    method: 'POST',
+    data: params
+  })
+}

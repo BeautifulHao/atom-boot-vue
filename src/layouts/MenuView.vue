@@ -64,12 +64,10 @@ export default {
         // 存在当前替换
         if (newRoute.params && newRoute.params.replace) {
           let replaceItemIndex = this.linkList.findIndex((value) => value === newRoute.params.replace)
-          if (replaceItemIndex > -1) {
+          let replaceRouteIndex = this.pageList.findIndex((value) => value.fullPath === newRoute.params.replace)
+          if (replaceItemIndex > -1 && replaceRouteIndex > -1) {
             this.linkList[replaceItemIndex] = newRoute.fullPath
-            let replaceRouteIndex = this.pageList.findIndex((value) => value.fullPath === newRoute.params.replace)
-            if (replaceRouteIndex > -1) {
-              this.pageList[replaceRouteIndex] = newRoute
-            }
+            this.pageList[replaceRouteIndex] = newRoute
           } else {
             this.linkList.push(newRoute.fullPath)
             this.pageList.push(newRoute)

@@ -66,34 +66,6 @@ const router = new Router({
           ]
         },
         {
-          path: '/demo',
-          name: 'demo',
-          component: RouteView,
-          meta: {
-            title: '测试',
-            needLogin: false
-          },
-          invisible: false,
-          icon: 'lock',
-          children: [
-            {
-              path: '/demo/item',
-              name: 'item',
-              component: () => import('@/pages/demo/needLogin.vue'),
-              icon: 'none'
-            },
-            {
-              path: '/demo/route',
-              name: 'demoRoute',
-              component: () => import('@/pages/demo/routeTest.vue'),
-              meta: {
-                title: '路由测试',
-                needLogin: false
-              }
-            }
-          ]
-        },
-        {
           path: '/list',
           name: 'list',
           meta: {
@@ -170,6 +142,34 @@ const router = new Router({
                   icon: 'none'
                 }
               ]
+            }
+          ]
+        },
+        {
+          path: '/demo',
+          name: 'demo',
+          component: RouteView,
+          meta: {
+            title: '测试',
+            needLogin: false
+          },
+          invisible: false,
+          icon: 'lock',
+          children: [
+            {
+              path: '/demo/item',
+              name: 'item',
+              component: () => import('@/pages/demo/needLogin.vue'),
+              icon: 'none'
+            },
+            {
+              path: '/demo/route',
+              name: 'demoRoute',
+              component: () => import('@/pages/demo/routeTest.vue'),
+              meta: {
+                title: '路由测试',
+                needLogin: false
+              }
             }
           ]
         }

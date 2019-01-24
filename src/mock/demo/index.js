@@ -4,7 +4,7 @@ import '@/mock/extend'
 let listDb = Mock.mock({
   'list|500': [
     {
-      name: { first: '@cfirst', last: '@clast' },
+      name: '@cname',
       gender: '@GENDER',
       city: () => {
         return Mock.Random.city(true)
@@ -50,7 +50,7 @@ Mock.mock(/\/demo\/list(.*?)/, 'get', options => {
 
   if (name) {
     results = results.filter(
-      item => (item.name.first + item.name.last).indexOf(name) > -1
+      item => item.name.indexOf(name) > -1
     )
   }
 
@@ -128,4 +128,56 @@ Mock.mock(/\/demo\/delete(.*?)/, 'post', ({ body }) => {
     result: true,
     message: 'success'
   }
+})
+
+Mock.mock(/\/demo\/save(.*?)/, 'post', ({ body }) => {
+  const { item } = JSON.parse(body)
+
+  if (item && item.key) {
+    let indexItem = listDb.findIndex(i => i.key === item.key)
+    if (indexItem > -1) {
+      listDb[indexItem] = item
+    }
+  } else {
+    let createKey = 0
+    listDb.forEach(function (e) {
+      if (e.key >= createKey) {
+        createKey = e.key + 1
+      }
+    })
+
+    item.key = createKey
+
+    if (!item.id || item.id.length !== 18) {
+      item.id = Mock.Random.id()
+    }
+
+    listDb.unshift(item)
+  }
+
+  return {
+    result: true,
+    message: item
+  }
+})
+
+Mock.mock(/\/demo\/item(.*?)/, 'get', options => {
+  let params = new URLSearchParams(options.url.substr(options.url.indexOf('?')))
+  let key = params.get('key') ? parseInt(params.get('key')) : undefined
+  let result = {
+    result: true,
+    message: {}
+  }
+
+  if (!key) {
+    result.result = false
+    result.message = '请求参数无效!'
+  } else {
+    result.message = listDb.find((value) => value.key === key)
+    if (!result.message) {
+      result.result = false
+      result.message = '当前单据已经不存在!'
+    }
+  }
+  return result
 })

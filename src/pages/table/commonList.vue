@@ -146,7 +146,7 @@
              @change="handleTableChange">
       <template slot="name"
                 slot-scope="name">
-        {{name.first}}{{name.last}}
+        {{name}}
       </template>
       <template slot="gender"
                 slot-scope="gender">
@@ -169,6 +169,14 @@
 import { getList, deleteItems } from '@/api/demo'
 
 const columns = [{
+  dataIndex: 'key',
+  key: 'key',
+  title: '序号',
+  width: 70,
+  align: 'right',
+  customRender: (text, record, index) => index + 1
+},
+{
   title: '姓名',
   dataIndex: 'name',
   width: 100,
@@ -177,7 +185,7 @@ const columns = [{
   title: '年龄',
   dataIndex: 'age',
   sorter: true,
-  align: 'left',
+  align: 'right',
   width: 80
 }, {
   title: '性别',
@@ -285,13 +293,24 @@ export default {
       console.log(e.key)
     },
     addItem () {
-      this.$router.replace({ name: 'common-list-item', params: { busKey: 1, editType: 'Add', replace: this.$route.fullPath } })
+      this.$route.params.replace = undefined
+      this.$router.replace({ name: 'common-list-item', params: { busKey: '*', editType: 'Add', replace: this.$route.fullPath } })
     },
     eidtItem () {
-
+      if (this.selectedRowKeys.length === 1) {
+        this.$route.params.replace = undefined
+        this.$router.replace({ name: 'common-list-item', params: { busKey: this.selectedRowKeys[0], editType: 'Edit', replace: this.$route.fullPath } })
+      } else {
+        this.$message.warning('请选择一个有效数据!')
+      }
     },
     viewItem () {
-
+      if (this.selectedRowKeys.length === 1) {
+        this.$route.params.replace = undefined
+        this.$router.replace({ name: 'common-list-item', params: { busKey: this.selectedRowKeys[0], editType: 'View', replace: this.$route.fullPath } })
+      } else {
+        this.$message.warning('请选择一个有效数据!')
+      }
     },
     deleteItem () {
       if (this.selectedRowKeys.length === 0) {
@@ -359,6 +378,12 @@ export default {
       this.selectedRowKeys = []
     }
 
+  },
+  activated () {
+    // 明细返回时 会带replace参数，如果有参数，则刷新页面数据
+    if (this.$route.params.replace) {
+      this.reLoad()
+    }
   }
 }
 </script>
