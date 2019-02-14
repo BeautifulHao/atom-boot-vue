@@ -11,7 +11,9 @@
 - druid
 - swagger2
 - mysql
-
+- redis
+- kafka(待添)
+- elasticsearch(待添)
 
 # 部分页面效果
 - 登录
