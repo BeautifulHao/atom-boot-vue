@@ -1,6 +1,6 @@
 # 项目说明
 - atom-boot-vue为基于vue的企业中后台快速开发框架前端部分代码。
-- 结合[atom-boot](https://github.com/BeautifulHao/atom-boot)后端（spring-boot），可以快速进行企业中后段系统业务开发。
+- 结合[atom-boot](https://github.com/BeautifulHao/atom-boot)后端框架（spring-boot/mybatis/spring-security/mysql），可以快速进行企业中后端系统业务开发。
 
 # 部分页面效果
 - 登录
