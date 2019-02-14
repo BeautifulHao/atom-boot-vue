@@ -1,6 +1,17 @@
 # 项目说明
-- atom-boot-vue为基于vue的企业中后台快速开发框架前端部分代码。
-- 结合[atom-boot](https://github.com/BeautifulHao/atom-boot)后端框架（spring-boot/mybatis/spring-security/mysql），可以快速进行企业中后端系统业务开发。
+- atom-boot-vue为基于vue（主要依赖组件库 ant-design-vue ）的企业中后台快速开发框架前端部分代码。
+- 结合[atom-boot](https://github.com/BeautifulHao/atom-boot)后端框架，可以快速进行企业中后端系统业务开发。
+
+# 技术选型
+- vue全家桶
+- webpack 3.x
+- ant-design-vue组件
+- spring-boot(spring/spring-mvc/spring-security)
+- mybatis(mybatis-plus)
+- druid
+- swagger2
+- mysql
+
 
 # 部分页面效果
 - 登录
